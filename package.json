@@ -1,0 +1,15 @@
+{
+    "name": "yma-csv-downloader",
+    "version": "1.0.0",
+    "description": "在浏览器中将数据以 CSV 格式进行导出下载",
+    "main": "./src/index.js",
+    "scripts": {},
+    "files": [
+        "src"
+    ],
+    "keywords": [
+        "csv"
+    ],
+    "author": "",
+    "license": "ISC"
+}
