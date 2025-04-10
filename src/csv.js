@@ -1,8 +1,5 @@
 const NewlineChar = '\r\n';
-const raf =
-    typeof requestAnimationFrame === 'function'
-        ? requestAnimationFrame
-        : setTimeout;
+const raf = typeof requestAnimationFrame === 'function' ? requestAnimationFrame : setTimeout;
 
 const makeWrapper = function (char) {
     return function (str) {
@@ -36,21 +33,21 @@ const extractHeaderFromDatas = function (datas) {
         function (acc, v) {
             if (Array.isArray(v)) {
                 return acc;
-            } else {
-                return identity(Object.keys(v), acc);
             }
+            return identity(Object.keys(v), acc);
         },
         {
             order: [],
             map: {},
-        }
+        },
     );
 };
 
 const extractHeaderFromColumns = function (columns) {
     return columns.reduce(
         function (acc, v) {
-            let id, value;
+            let id;
+            let value;
             if (typeof v === 'string') {
                 id = v;
                 value = v;
@@ -67,7 +64,7 @@ const extractHeaderFromColumns = function (columns) {
         {
             order: [],
             map: {},
-        }
+        },
     );
 };
 
@@ -86,15 +83,7 @@ function coalesce(lRef, rRef) {
     return !isNil(lRef) ? lRef : rRef;
 }
 
-const createChunkProcessor = (
-    resolver,
-    wrapper,
-    content,
-    datas,
-    columnOrder,
-    separator,
-    chunkSize
-) => {
+const createChunkProcessor = (resolver, wrapper, content, datas, columnOrder, separator, chunkSize) => {
     const chunks = toChunks(datas, chunkSize);
 
     let i = 0;
@@ -105,9 +94,7 @@ const createChunkProcessor = (
         }
 
         const chunk = chunks[i];
-        const asArray =
-            Array.isArray(chunk[0]) &&
-            !columnOrder.some(k => typeof chunk[0][k] !== 'undefined');
+        const asArray = Array.isArray(chunk[0]) && !columnOrder.some(k => typeof chunk[0][k] !== 'undefined');
 
         i += 1;
 
@@ -144,37 +131,26 @@ module.exports = function csv({
         parser().then(d => {
             if (!Array.isArray(d)) {
                 return resolve();
-            } else {
-                const resolver = makeResolver(resolve, newLineAtEnd);
-                const wrapper = makeWrapper(wrapColumnChar);
-
-                const {map, order} = columns
-                    ? extractHeaderFromColumns(columns)
-                    : extractHeaderFromDatas(datas);
-                const content = [];
-                if (!noHeader) {
-                    const headerNames = order.map(id => map[id]);
-                    if (headerNames.length > 0) {
-                        if (title !== '') {
-                            content.push(title);
-                        }
-
-                        content.push(headerNames.map(wrapper).join(separator));
-                    }
-                }
-
-                const processChunk = createChunkProcessor(
-                    resolver,
-                    wrapper,
-                    content,
-                    datas,
-                    order,
-                    separator,
-                    chunkSize
-                );
-
-                raf(processChunk);
             }
+            const resolver = makeResolver(resolve, newLineAtEnd);
+            const wrapper = makeWrapper(wrapColumnChar);
+
+            const {map, order} = columns ? extractHeaderFromColumns(columns) : extractHeaderFromDatas(datas);
+            const content = [];
+            if (!noHeader) {
+                const headerNames = order.map(id => map[id]);
+                if (headerNames.length > 0) {
+                    if (title !== '') {
+                        content.push(title);
+                    }
+
+                    content.push(headerNames.map(wrapper).join(separator));
+                }
+            }
+
+            const processChunk = createChunkProcessor(resolver, wrapper, content, datas, order, separator, chunkSize);
+
+            raf(processChunk);
         });
     });
 };

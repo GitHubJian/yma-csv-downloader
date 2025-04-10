@@ -4,11 +4,16 @@ const BOM = '\ufeff';
 
 const timestramp = function (now) {
     const year = now.getFullYear();
-    const month = now.getMonth() + 1;
-    const day = now.getDate();
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-    const second = now.getSeconds();
+    let month = now.getMonth() + 1;
+    month = Number(month) < 10 ? '0' + month : month;
+    let day = now.getDate();
+    day = Number(day) < 10 ? '0' + day : day;
+    let hour = now.getHours();
+    hour = Number(hour) < 10 ? '0' + hour : hour;
+    let minute = now.getMinutes();
+    minute = Number(minute) < 10 ? '0' + minute : minute;
+    let second = now.getSeconds();
+    second = Number(second) < 10 ? '0' + second : second;
 
     return [year, month, day, hour, minute, second].join('');
 };
@@ -54,12 +59,12 @@ function download(options, callback) {
                 },
                 function () {
                     callback && callback(null);
-                }
+                },
             );
         },
         reason => {
             callback && callback(reason);
-        }
+        },
     );
 }
 

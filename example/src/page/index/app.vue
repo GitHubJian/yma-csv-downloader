@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import csv from "../../../../src/index";
+import csv from '../../../../src/index';
 
 export default {
     data() {
@@ -14,27 +14,27 @@ export default {
     },
     mounted() {
         csv({
-            name: "imcsv",
+            name: 'imcsv',
             bom: true,
-            title: "我是导出次",
+            title: '我是导出次',
             columns: [
                 {
-                    id: "errorWord",
-                    displayName: "错词",
+                    id: 'errorWord',
+                    displayName: '错词',
                 },
                 {
-                    id: "suggestWord",
-                    displayName: "建议词",
+                    id: 'suggestWord',
+                    displayName: '建议词',
                 },
             ],
             datas: [
                 {
-                    errorWord: "白发仓仓",
-                    suggestWord: "白发苍苍",
+                    errorWord: '白发仓仓',
+                    suggestWord: '白发苍苍',
                 },
                 {
-                    errorWord: "白发仓仓1",
-                    suggestWord: "白发苍苍1",
+                    errorWord: '白发仓仓1',
+                    suggestWord: '白发苍苍1',
                 },
             ],
         });
